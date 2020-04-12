@@ -24,10 +24,14 @@ def query_ques():
     if choice == "1":
         return True
     elif choice == "2":
-        print("Goodbye!")
-        sys.exit()
+        goodbye()
     else:
         return False
+
+
+def goodbye():
+    print("\n\nGoodbye!")
+    sys.exit()
 
 
 def use_api(index):
@@ -89,21 +93,24 @@ def process_sql(data):
 
 
 def main():
-    while True:
+    try:
         while True:
-            index = request_index()
-            json = use_api(index)
-            if json:
-                break
-        data = extract_data(json)
-        process_sql(data)
+            while True:
+                index = request_index()
+                json = use_api(index)
+                if json:
+                    break
+            data = extract_data(json)
+            process_sql(data)
 
-        while True:
-            choice = query_ques()
-            if choice:
-                break
-            else:
-                print("Invalid input!\n")
+            while True:
+                choice = query_ques()
+                if choice:
+                    break
+                else:
+                    print("Invalid input!\n")
+    except KeyboardInterrupt:
+        goodbye()
 
 
 if __name__ == "__main__":
