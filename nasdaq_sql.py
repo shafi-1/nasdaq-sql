@@ -16,6 +16,20 @@ def request_index():
     return str(input("Enter a NASDAQ index:\n"))
 
 
+def query_ques():
+    choice = input("Would you like to input another stock?\n"
+                   "1. Yes\n"
+                   "2. No\n")
+
+    if choice == "1":
+        return True
+    elif choice == "2":
+        print("Goodbye!")
+        sys.exit()
+    else:
+        return False
+
+
 def use_api(index):
     try:
         response = requests.get(f"https://api.nasdaq.com/api/quote/{index}/chart?assetclass=stocks")
@@ -26,7 +40,7 @@ def use_api(index):
         json_content = response.json()
 
         if json_content['data'] is None:
-            print("Index does not exist in the NASDAQ!")
+            print("Index does not exist in the NASDAQ!\n")
             return False
         else:
             print("Index found!")
@@ -84,14 +98,14 @@ def main():
         data = extract_data(json)
         process_sql(data)
 
-        choice = int(input("Would you like to input another stock?\n"
-                           "1. Yes\n"
-                           "2. No\n"))
-
-        if choice == 2:
-            print("Goodbye!")
-            sys.exit()
+        while True:
+            choice = query_ques()
+            if choice:
+                break
+            else:
+                print("Invalid input!\n")
 
 
 if __name__ == "__main__":
     main()
+
